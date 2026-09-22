@@ -39,6 +39,7 @@
     goverlay
     protonup-qt
     winetricks
-    
+    prismlauncher
+    jdk21
   ];
 }
