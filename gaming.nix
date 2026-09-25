@@ -37,8 +37,6 @@
   environment.systemPackages = with pkgs; [
     heroic
     goverlay
-    protonup-qt
-    winetricks
     prismlauncher
     jdk21
   ];
