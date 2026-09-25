@@ -3,7 +3,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    nix-flatpak.url = "github:gmodena/nix-flatpak";
+    nix-flatpak.url = "github:gmodena/nix-flatpak?ref=v0.7.0";
     nix-flatpak.inputs.nixpkgs.follows = "nixpkgs";
     nvibrant = {
       url = "github:mikaeladev/nix-nvibrant";
