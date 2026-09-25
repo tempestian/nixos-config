@@ -14,7 +14,9 @@
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
- 
+
+  zramSwap = { enable = true; memoryPercent = 50; };
+
   time.timeZone = "Europe/Istanbul";
   time.hardwareClockInLocalTime = false;
   services.timesyncd.enable = true;
