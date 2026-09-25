@@ -39,11 +39,6 @@ in
       ];
   };
 
-  systemd.services.flatpak-managed-install = {
-    after = [ "network-online.target" ];
-    wants = [ "network-online.target" ];
-  };
-
   programs.git = {
     enable = true;
     settings.user.name = "tempestian";
