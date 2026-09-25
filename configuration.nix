@@ -74,4 +74,5 @@
     options = "--delete-older-than 7d";
   };
   nix.settings.auto-optimise-store = true;
+  nix.settings.max-jobs = "6";
 }
