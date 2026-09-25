@@ -15,6 +15,7 @@ in
     gedit
     spotify
     fastfetch
+    qbittorrent
     btop
     unzip
     onlyoffice-desktopeditors
