@@ -8,9 +8,10 @@
     nvibrant = {
       url = "github:mikaeladev/nix-nvibrant";
       inputs.nixpkgs.follows = "nixpkgs";
-    };  
+    };
+    openanime.url = "github:OpenAnime/desktop-ts";
   };
-  outputs = { self, nixpkgs, home-manager, nix-flatpak, nvibrant, ... }@inputs: {
+  outputs = { self, nixpkgs, home-manager, nix-flatpak, nvibrant, openanime, ... }@inputs: {
     nixosConfigurations = {
       nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
