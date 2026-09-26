@@ -3,6 +3,13 @@ let
   yaruVariant = "Yaru-blue-dark";
   yaruShellVariant =
     if pkgs.lib.hasSuffix "-dark" yaruVariant then "Yaru-dark" else "Yaru";
+
+  openanime = inputs.openanime.packages.x86_64-linux.default.overrideAttrs (old: {
+    yarnOfflineCache = pkgs.fetchYarnDeps {
+      yarnLock = "${old.src}/yarn.lock";
+      hash = "sha256-kUFtdnDKk4KIIobBSr0tOnm8zUrxGX/wXNsl++jr4Eo=";
+    };
+  });
 in
 {
   home.username = "bayram";
@@ -14,6 +21,7 @@ in
     discord
     gedit
     spotify
+    openanime
     fastfetch
     qbittorrent
     btop
