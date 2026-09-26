@@ -36,6 +36,7 @@ in
     packages = [ 
       "org.vinegarhq.Sober" 
       "net.retrodeck.retrodeck"
+      "io.itch.itch"
       ];
   };
 
