@@ -36,7 +36,6 @@
 
   environment.systemPackages = with pkgs; [
     heroic
-    itch
     goverlay
     prismlauncher
     jdk21
