@@ -8,6 +8,7 @@
       ./network.nix      
       ./desktop.nix
       ./gaming.nix  
+      ./modules
     ];
 
   system.stateVersion = "26.05";
@@ -45,7 +46,7 @@
  
   users.users.bayram = {
     isNormalUser = true;
-    extraGroups = [ "networkmanager" "wheel" "video" ];
+    extraGroups = [ "networkmanager" "wheel" "video" "i2c" ];
   };
 
   services.flatpak.enable = true;

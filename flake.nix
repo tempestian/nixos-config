@@ -10,12 +10,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     openanime.url = "github:OpenAnime/desktop-ts";
+    inir = {
+      url = "github:snowarch/inir";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
-  outputs = { self, nixpkgs, home-manager, nix-flatpak, nvibrant, openanime, ... }@inputs: {
+  outputs = { self, nixpkgs, home-manager, nix-flatpak, nvibrant, openanime, inir, ... }@inputs: {
     nixosConfigurations = {
       nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
+        specialArgs = { inherit inputs inir; };
         modules = [
           ./configuration.nix
           nvibrant.nixosModules.default

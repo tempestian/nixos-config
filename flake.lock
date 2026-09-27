@@ -20,6 +20,26 @@
         "type": "github"
       }
     },
+    "inir": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1789849958,
+        "narHash": "sha256-Zu4FrR/vn+Pq81hLkR5n3XXt+ja7m0my6ml+4IJotn4=",
+        "owner": "snowarch",
+        "repo": "inir",
+        "rev": "9574fa424c0d1008e927454e933a7fbe292f9fb2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "snowarch",
+        "repo": "inir",
+        "type": "github"
+      }
+    },
     "nix-flatpak": {
       "locked": {
         "lastModified": 1767983141,
@@ -110,6 +130,7 @@
     "root": {
       "inputs": {
         "home-manager": "home-manager",
+        "inir": "inir",
         "nix-flatpak": "nix-flatpak",
         "nixpkgs": "nixpkgs",
         "nvibrant": "nvibrant",
