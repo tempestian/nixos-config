@@ -19,6 +19,7 @@ in
   home.packages = with pkgs; [
     firefox
     discord
+    telegram-desktop
     gedit
     spotify
     openanime
