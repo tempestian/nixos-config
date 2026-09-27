@@ -20,8 +20,8 @@ input {
 }
 
 cursor {
-    xcursor-theme "Adwaita"
-    xcursor-size 26
+    xcursor-theme "Yaru"
+    xcursor-size 24
 }
 
 output "eDP-1" {
@@ -59,11 +59,13 @@ binds {
     Mod+Shift+Q { quit; }
     Mod+F       { fullscreen-window; }
     Mod+Shift+F { toggle-window-floating; }
+    Mod+A { toggle-window-floating; }
     Mod+Shift+C { center-window; }
     Mod+Grave   { switch-focus-between-floating-and-tiling; }
     Mod+C       { center-column; }
     Mod+R       { switch-preset-column-width; }
     Mod+M       { maximize-column; }
+    Mod+D       { maximize-column; }
     Mod+Shift+M { expand-column-to-available-width; }
     Mod+U       { reset-window-height; }
     Mod+Shift+R { switch-preset-window-height; }
