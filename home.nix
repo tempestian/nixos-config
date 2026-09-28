@@ -53,6 +53,12 @@ in
       shell = "fish";
     };
     extraConfig = ''
+      # iNiR teması yoksa/bozuksa kullanılacak yedek renkler (mor-lacivert palet)
+      foreground #E4E1E9
+      background #131318
+      selection_foreground #131318
+      selection_background #C5C0FF
+      cursor #C5C0FF
       include current-theme.conf
     '';
   };
@@ -144,6 +150,9 @@ in
     mkdir -p "$HOME/.config/niri"
     rm -f "$HOME/.config/niri/config.kdl"
     install -m 644 ${./niri/config.kdl} "$HOME/.config/niri/config.kdl"
+    # Rebuild sonrası sabit renklere dönmesin: mevcut duvar kağıdı renklerini hemen uygula
+    PATH="${lib.makeBinPath [ pkgs.python3 pkgs.jq pkgs.coreutils pkgs.bash ]}:$PATH" \
+      ${./scripts/niri-sync-colors} 2>/dev/null || true
     ${pkgs.systemd}/bin/systemctl --user restart niri-sync-colors.service 2>/dev/null || true
   '';
 
@@ -163,6 +172,9 @@ in
       PartOf = [ "graphical-session.target" ];
     };
     Service = {
+      Environment = [
+        "PATH=${lib.makeBinPath [ pkgs.python3 pkgs.jq pkgs.inotify-tools pkgs.coreutils pkgs.bash pkgs.gnugrep pkgs.gnused ]}:/run/current-system/sw/bin"
+      ];
       ExecStart = "%h/.local/bin/niri-sync-colors --watch";
       Restart = "on-failure";
     };

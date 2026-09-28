@@ -6,6 +6,7 @@ META_JSON="$HOME/.local/state/quickshell/user/generated/theme-meta.json"
 GENERATED_DIR="$HOME/.local/state/quickshell/user/generated"
 SHELL_CONFIG_FILE="$HOME/.config/illogical-impulse/config.json"
 PYTHON="python3"
+export PATH="$HOME/.local/bin:/etc/profiles/per-user/$USER/bin:/run/current-system/sw/bin:$PATH"
 
 find_niri_config_py() {
     if [[ -f "$HOME/.config/quickshell/inir/scripts/niri-config.py" ]]; then
