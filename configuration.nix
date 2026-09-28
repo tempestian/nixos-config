@@ -44,9 +44,12 @@
  
   console.keyMap = "trq";
  
+  programs.fish.enable = true;
+
   users.users.bayram = {
     isNormalUser = true;
     extraGroups = [ "networkmanager" "wheel" "video" "i2c" ];
+    shell = pkgs.fish;
   };
 
   services.flatpak.enable = true;

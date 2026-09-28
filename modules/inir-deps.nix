@@ -64,6 +64,9 @@ with pkgs; [
   nerd-fonts.jetbrains-mono
   material-symbols
   papirus-icon-theme
+  adw-gtk3
+  starship
+  eza
 
   fuzzel
   wtype

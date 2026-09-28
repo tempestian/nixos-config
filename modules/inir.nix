@@ -59,5 +59,7 @@ in
     "L+ %h/.config/illogical-impulse/version.json - - - - ${versionJsonFile}"
     "L+ %h/.icons - - - - %h/.local/share/icons"
     "L+ %h/.config/quickshell/inir - - - - /run/current-system/sw/share/quickshell/inir"
+    "f %h/.config/kitty/current-theme.conf 0644 - - - -"
+    "C %h/.config/starship.toml 0644 - - - /run/current-system/sw/share/quickshell/inir/defaults/starship/starship.toml"
   ];
 }

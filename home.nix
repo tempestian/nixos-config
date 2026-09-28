@@ -1,7 +1,5 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, inputs, lib, ... }:
 let
-  yaruVariant = "Yaru-blue-dark";
-
   openanime = inputs.openanime.packages.x86_64-linux.default.overrideAttrs (old: {
     yarnOfflineCache = pkgs.fetchYarnDeps {
       yarnLock = "${old.src}/yarn.lock";
@@ -48,7 +46,33 @@ in
 
   programs.kitty = {
     enable = true;
-    settings.hide_window_decorations = "yes";
+    settings = {
+      hide_window_decorations = "yes";
+      background_opacity = "0.85";
+      dynamic_background_opacity = "yes";
+      shell = "fish";
+    };
+    extraConfig = ''
+      include current-theme.conf
+    '';
+  };
+
+  programs.fish = {
+    enable = true;
+    shellAliases = {
+      clear = "printf '\\033[2J\\033[3J\\033[1;1H'";
+      celar = "printf '\\033[2J\\033[3J\\033[1;1H'";
+      claer = "printf '\\033[2J\\033[3J\\033[1;1H'";
+      ls = "eza --icons=auto";
+      q = "inir run";
+    };
+    interactiveShellInit = ''
+      set fish_greeting
+
+      if command -v starship &>/dev/null
+        starship init fish | source
+      end
+    '';
   };
 
   programs.bash = {
@@ -91,33 +115,37 @@ in
     };
   };
 
-  gtk = {
-    enable = true;
-    theme = {
-      name = yaruVariant;
-      package = pkgs.yaru-theme;
-    };
-    iconTheme = {
-      name = "Yaru";
-      package = pkgs.yaru-theme;
-    };
-    cursorTheme = {
-      name = "Yaru";
-      package = pkgs.yaru-theme;
-      size = 24;
-    };
+  dconf.settings."org/gnome/desktop/interface" = {
+    color-scheme = "prefer-dark";
+    gtk-theme = "adw-gtk3-dark";
+    icon-theme = "Yaru";
+    cursor-theme = "Yaru";
+    cursor-size = 24;
+    font-name = "Inter Medium 11";
+    monospace-font-name = "JetBrainsMono Nerd Font 11";
+  };
+
+  home.pointerCursor = {
+    name = "Yaru";
+    package = pkgs.yaru-theme;
+    size = 24;
+    x11.enable = true;
+  };
+
+  home.sessionVariables = {
+    XCURSOR_THEME = "Yaru";
+    XCURSOR_SIZE = "24";
   };
 
   xdg.configFile = {
-    "gtk-4.0/gtk.css".source =
-      "${pkgs.yaru-theme}/share/themes/${yaruVariant}/gtk-4.0/gtk.css";
-    "gtk-4.0/gtk-dark.css".source =
-      "${pkgs.yaru-theme}/share/themes/${yaruVariant}/gtk-4.0/gtk-dark.css";
-    "gtk-4.0/assets".source =
-      "${pkgs.yaru-theme}/share/themes/${yaruVariant}/gtk-4.0/assets";
-
-    "niri/config.kdl".source = ./niri/config.kdl;
   };
+
+  home.activation.niriConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    mkdir -p "$HOME/.config/niri"
+    rm -f "$HOME/.config/niri/config.kdl"
+    install -m 644 ${./niri/config.kdl} "$HOME/.config/niri/config.kdl"
+    ${pkgs.systemd}/bin/systemctl --user restart niri-sync-colors.service 2>/dev/null || true
+  '';
 
   home.file."local/bin/niri-sync-colors" = {
     source = ./scripts/niri-sync-colors;
