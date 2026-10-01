@@ -20,7 +20,7 @@ in
     firefox
     discord
     telegram-desktop
-    gedit
+    gnome-text-editor
     spotify
     openanime
     fastfetch
