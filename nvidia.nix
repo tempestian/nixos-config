@@ -14,9 +14,11 @@
     modesetting.enable = true;
     open = true;
     nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    package = config.boot.kernelPackages.nvidiaPackages.latest;
     powerManagement.enable = true;
   };
+
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   hardware.graphics.extraPackages = [ pkgs.nvidia-vaapi-driver ];
   environment.sessionVariables = { NVD_BACKEND = "direct"; MOZ_DISABLE_RDD_SANDBOX = "1"; };
