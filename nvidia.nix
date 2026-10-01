@@ -18,6 +18,9 @@
     powerManagement.enable = true;
   };
 
+  hardware.graphics.extraPackages = [ pkgs.nvidia-vaapi-driver ];
+  environment.sessionVariables = { NVD_BACKEND = "direct"; MOZ_DISABLE_RDD_SANDBOX = "1"; };
+
   services.fstrim.enable = true;
 
   systemd.tmpfiles.rules = [
