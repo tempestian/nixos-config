@@ -19,6 +19,17 @@
   networking.nameservers = [ "127.0.0.1" ];
   networking.networkmanager.dns = "none";
 
+  hardware.enableRedistributableFirmware = true;
+  hardware.wirelessRegulatoryDatabase = true;
+
+  environment.systemPackages = with pkgs; [ iw wirelesstools ];
+
+  boot.extraModprobeConfig = ''
+    options cfg80211 ieee80211_regdom=DE
+  '';
+
+  networking.networkmanager.wifi.powersave = false;
+
   services.dnscrypt-proxy = {
     enable = true;
     settings = {
