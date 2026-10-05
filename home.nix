@@ -83,7 +83,7 @@ in
   programs.mangohud = {
     enable = true;
     settings = {
-      position = "top-left";
+      position = "top-center";
       font_size = 24;
       background_alpha = 0.4;
       round_corners = 6;
