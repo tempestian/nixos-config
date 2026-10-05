@@ -28,6 +28,7 @@ in
     btop
     unzip
     onlyoffice-desktopeditors
+    pear-desktop
     yaru-theme
     gnomeExtensions.user-themes
     gnomeExtensions.dash-to-dock
