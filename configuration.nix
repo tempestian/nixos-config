@@ -68,6 +68,10 @@
     libayatana-appindicator
   ]);
 
+  programs.droidcam.enable = true;
+
+  boot.kernelModules = [ "snd-aloop" ];
+
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   nix.gc = {
