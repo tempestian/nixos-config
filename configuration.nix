@@ -68,6 +68,15 @@
     libayatana-appindicator
   ]);
 
+  {
+  programs.appimage = {
+    enable = true;
+    binfmt = true;
+  };
+
+  boot.kernelModules = [ "snd-aloop" ];
+}
+
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   nix.gc = {
