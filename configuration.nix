@@ -8,6 +8,7 @@
       ./network.nix      
       ./desktop.nix
       ./gaming.nix  
+      ./renpy.nix
 ];
 
   system.stateVersion = "26.05";
