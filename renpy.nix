@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 let
-  renpy-fhs = pkgs.buildFHSEnv {
+  renpy-sdk = pkgs.buildFHSEnv {
     name = "renpy-sdk";
     targetPkgs = pkgs: with pkgs; [
       jdk21
@@ -35,17 +35,22 @@ let
     runScript = pkgs.writeShellScript "renpy-run" ''
       exec "$HOME/renpy-sdk/renpy.sh" "$@"
     '';
-  };
-
-  renpy-desktop = pkgs.makeDesktopItem {
-    name = "renpy-sdk";
-    desktopName = "Ren'Py SDK";
-    exec = "renpy-sdk";
-    categories = [ "Development" "Game" ];
+    extraInstallCommands = ''
+      mkdir -p $out/share/applications
+      cat > $out/share/applications/renpy-sdk.desktop <<EOF
+      [Desktop Entry]
+      Type=Application
+      Name=Ren'Py SDK
+      Comment=Ren'Py Launcher
+      Exec=$out/bin/renpy-sdk
+      Icon=applications-games
+      Terminal=false
+      Categories=Development;Game;
+      EOF
+    '';
   };
 in
 {
-  environment.systemPackages = [ renpy-fhs renpy-desktop ];
-
+  environment.systemPackages = [ renpy-sdk ];
   programs.nix-ld.enable = true;
 }
