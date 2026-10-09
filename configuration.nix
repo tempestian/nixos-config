@@ -8,6 +8,7 @@
       ./network.nix      
       ./desktop.nix
       ./gaming.nix  
+      ./translation.nix
     ];
 
   system.stateVersion = "26.05";
