@@ -25,7 +25,6 @@ in
     openanime
     fastfetch
     qbittorrent
-    renpy
     btop
     unzip
     onlyoffice-desktopeditors
