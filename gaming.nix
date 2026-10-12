@@ -34,7 +34,15 @@
   };
 };
 
-  programs.eden.enable = true;
+  programs.eden = {
+    enable = true;
+    package = inputs.eden.packages.x86_64-linux.default.overrideAttrs (old: {
+      cmakeFlags = (old.cmakeFlags or [ ]) ++ [
+        "-DYUZU_WARNINGS_AS_ERRORS=OFF"
+        "-DCMAKE_CXX_FLAGS=-Wno-error"
+      ];
+    });
+  };
 
   environment.systemPackages = with pkgs; [
     heroic
