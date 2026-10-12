@@ -20,8 +20,6 @@ in
     firefox
     discord
     telegram-desktop
-    claude-code
-    mcp-nixos
     gnome-text-editor
     spotify
     openanime
