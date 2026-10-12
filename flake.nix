@@ -9,13 +9,14 @@
       url = "github:mikaeladev/nix-nvibrant";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    openanime.url = "github:OpenAnime/desktop-ts";
     eden = {
       url = "github:Daaboulex/eden-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-flatpak, nvibrant, eden, ... }@inputs: {
+  outputs = { self, nixpkgs, home-manager, nix-flatpak, nvibrant, openanime, eden, ... }@inputs: {
     nixosConfigurations = {
       nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -34,6 +35,7 @@
             home-manager.users.bayram = import ./home.nix;
             home-manager.sharedModules = [
               nix-flatpak.homeManagerModules.nix-flatpak
+
             ];
           }
         ];
