@@ -17,12 +17,6 @@ let
       libpulseaudio
       glib
       gtk3
-      xorg.libX11
-      xorg.libXext
-      xorg.libXrender
-      xorg.libXi
-      xorg.libXrandr
-      xorg.libXcursor
       stdenv.cc.cc.lib
       which
       unzip
