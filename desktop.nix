@@ -2,13 +2,13 @@
 {
   services.displayManager.gdm.enable = true;
   services.desktopManager.gnome.enable = true;
-  services.gnome.core-utilities.enable = false;
+  services.gnome.core-apps.enable = false;
 
   environment.gnome.excludePackages = with pkgs; [
-    epiphany          
-    gnome-tour        
+    epiphany
+    gnome-tour
     gnome-text-editor
-    totem            
+    totem
     simple-scan
     yelp
     gnome-system-monitor
