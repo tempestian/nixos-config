@@ -34,6 +34,8 @@
   };
 };
 
+  programs.eden.enable = true;
+
   environment.systemPackages = with pkgs; [
     heroic
     goverlay
