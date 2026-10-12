@@ -37,10 +37,9 @@
   programs.eden = {
     enable = true;
     package = inputs.eden.packages.x86_64-linux.default.overrideAttrs (old: {
-      cmakeFlags = (old.cmakeFlags or [ ]) ++ [
-        "-DYUZU_WARNINGS_AS_ERRORS=OFF"
-        "-DCMAKE_CXX_FLAGS=-Wno-error"
-      ];
+      preConfigure = (old.preConfigure or "") + ''
+        export NIX_CFLAGS_COMPILE="$NIX_CFLAGS_COMPILE -Wno-error=maybe-uninitialized -Wno-maybe-uninitialized"
+      '';
     });
   };
 
