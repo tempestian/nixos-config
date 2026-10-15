@@ -7,7 +7,6 @@
   environment.gnome.excludePackages = with pkgs; [
     epiphany
     gnome-tour
-    gnome-text-editor
     totem
     simple-scan
     yelp
@@ -24,16 +23,5 @@
 
   services.udev.packages = with pkgs; [ gnome-settings-daemon ];
 
-  programs.dconf = {
-    enable = true;
-    profiles.user.databases = [
-      {
-        settings = {
-          "org/gnome/desktop/interface" = {
-            show-battery-percentage = true;
-          };
-        };
-      }
-    ];
-  };
+  programs.dconf.enable = true;
 }

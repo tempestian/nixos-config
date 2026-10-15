@@ -36,7 +36,6 @@ in
     gnomeExtensions.appindicator
     gnomeExtensions.boost-volume
     gnomeExtensions.caffeine
-    gnome-tweaks
     ubuntu-sans
   ];
 
