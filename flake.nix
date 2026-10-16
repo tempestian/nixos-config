@@ -15,13 +15,16 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-flatpak, nvibrant, openanime, eden, ... }@inputs: {
-    nixosConfigurations = {
-      nixos = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
+  outputs = { nixpkgs, home-manager, nix-flatpak, nvibrant, eden, ... }@inputs:
+    let
+      vars = import ./vars.nix;
+    in
+    {
+      nixosConfigurations.${vars.hostName} = nixpkgs.lib.nixosSystem {
+        system = vars.system;
+        specialArgs = { inherit inputs vars; };
         modules = [
-          ./configuration.nix
+          ./hosts
           nvibrant.nixosModules.default
           nix-flatpak.nixosModules.nix-flatpak
           eden.nixosModules.default
@@ -30,8 +33,8 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = { inherit inputs; };
-            home-manager.users.bayram = import ./home.nix;
+            home-manager.extraSpecialArgs = { inherit inputs vars; };
+            home-manager.users.${vars.username} = import ./home;
             home-manager.sharedModules = [
               nix-flatpak.homeManagerModules.nix-flatpak
             ];
@@ -39,5 +42,4 @@
         ];
       };
     };
-  };
 }
