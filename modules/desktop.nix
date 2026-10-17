@@ -1,28 +1,46 @@
-{ lib, pkgs, ... }:
+{ config, lib, pkgs, vars, ... }:
 {
-  services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
-  services.gnome.core-apps.enable = false;
+  options.my.desktop.oneUiGreeter = lib.mkEnableOption "One UI giriş ekranı (kapalıyken tuigreet)";
 
-  environment.gnome.excludePackages = [ pkgs.gnome-tour ];
+  config = {
+    programs.niri = {
+      enable = true;
+      useNautilus = false;
+    };
 
-  environment.systemPackages = with pkgs; [
-    gnome-tweaks
-    nautilus
-    gnome-console
-    gnome-calculator
-    gnome-obfuscate
-    gtk3
-    libayatana-appindicator
-  ];
+    programs.qs-niri-system = {
+      enable = true;
+      profile = if config.my.desktop.oneUiGreeter then "bloated" else "base";
+      greeter.user = vars.username;
+    };
 
-  environment.variables.GI_TYPELIB_PATH =
-    lib.makeSearchPath "lib/girepository-1.0" (with pkgs; [
-      gtk3
-      libayatana-appindicator
-    ]);
+    security.pam.services.greetd.enableGnomeKeyring = true;
 
-  services.udev.packages = with pkgs; [ gnome-settings-daemon ];
+    programs.dconf.enable = true;
+    programs.fish.enable = true;
+    programs.xfconf.enable = true;
 
-  programs.dconf.enable = true;
+    programs.thunar = {
+      enable = true;
+      plugins = with pkgs; [
+        thunar-archive-plugin
+        thunar-volman
+      ];
+    };
+
+    services.gvfs.enable = true;
+    services.tumbler.enable = true;
+
+    qt = {
+      enable = true;
+      platformTheme = "qt5ct";
+    };
+
+    environment.sessionVariables.NIXOS_OZONE_WL = "1";
+
+    environment.systemPackages = with pkgs; [
+      xwayland-satellite
+      xdg-utils
+    ];
+  };
 }

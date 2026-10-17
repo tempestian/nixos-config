@@ -12,14 +12,20 @@ in
     firefox
     discord
     telegram-desktop
-    gnome-text-editor
+    mousepad
     spotify
     openanime
     fastfetch
     qbittorrent
-    btop
     unzip
     onlyoffice-desktopeditors
     pear-desktop
+    mpv
+    imv
+    xarchiver
+    pavucontrol
+    networkmanagerapplet
+    qalculate-gtk
+    wl-clipboard
   ];
 }

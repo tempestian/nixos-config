@@ -1,59 +1,86 @@
-{ lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 let
-  accents = [ "blue" "purple" "sage" "red" "orange" ];
-  accent = lib.strings.trim (builtins.readFile ./accent);
-  dark = true;
+  palette = import ./palette.nix { inherit lib pkgs; };
+  home = config.home.homeDirectory;
 
-  yaruVariant = "Yaru-${accent}" + lib.optionalString dark "-dark";
-  yaruShellVariant = if dark then "Yaru-dark" else "Yaru";
-  themeDir = "${pkgs.yaru-theme}/share/themes/${yaruVariant}/gtk-4.0";
+  cursor = {
+    name = "Bibata-Modern-Classic";
+    package = pkgs.bibata-cursors;
+    size = 24;
+  };
+
+  gtkCss = ''
+    @import url("colors.css");
+  '';
+
+  qtConf = qt: ''
+    [Appearance]
+    color_scheme_path=${home}/.config/${qt}/colors/matugen.conf
+    custom_palette=true
+    icon_theme=Papirus-Dark
+    standard_dialogs=default
+    style=Fusion
+
+    [Fonts]
+    fixed="JetBrainsMono Nerd Font,11,-1,5,400,0,0,0,0,0,0,0,0,0,0,1"
+    general="Inter,11,-1,5,400,0,0,0,0,0,0,0,0,0,0,1"
+  '';
 in
 {
+  imports = [ ./matugen.nix ];
+
   assertions = [{
-    assertion = builtins.elem accent accents;
-    message = "home/theme/accent geçersiz: '${accent}'. Geçerli değerler: ${lib.concatStringsSep ", " accents}";
+    assertion = builtins.hasAttr palette.accent palette.accents;
+    message = "home/theme/accent geçersiz: '${palette.accent}'. Geçerli değerler: ${lib.concatStringsSep ", " (builtins.attrNames palette.accents)}";
   }];
 
   home.packages = with pkgs; [
-    yaru-theme
-    ubuntu-sans
+    inter
+    nerd-fonts.jetbrains-mono
+    papirus-icon-theme
+    adw-gtk3
   ];
+
+  home.pointerCursor = {
+    inherit (cursor) name package size;
+    gtk.enable = true;
+    x11.enable = true;
+  };
 
   gtk = {
     enable = true;
     theme = {
-      name = yaruVariant;
-      package = pkgs.yaru-theme;
+      name = "adw-gtk3-dark";
+      package = pkgs.adw-gtk3;
     };
     iconTheme = {
-      name = "Yaru";
-      package = pkgs.yaru-theme;
+      name = "Papirus-Dark";
+      package = pkgs.papirus-icon-theme;
     };
-    cursorTheme = {
-      name = "Yaru";
-      package = pkgs.yaru-theme;
-      size = 24;
+    font = {
+      name = "Inter";
+      size = 11;
+      package = pkgs.inter;
+    };
+    gtk3.extraCss = gtkCss;
+    gtk4 = {
+      theme = null;
+      extraCss = gtkCss;
     };
   };
 
   xdg.configFile = {
-    "gtk-4.0/gtk.css".source = "${themeDir}/gtk.css";
-    "gtk-4.0/gtk-dark.css".source = "${themeDir}/gtk-dark.css";
-    "gtk-4.0/assets".source = "${themeDir}/assets";
+    "qt5ct/qt5ct.conf".text = qtConf "qt5ct";
+    "qt6ct/qt6ct.conf".text = qtConf "qt6ct";
   };
 
-  dconf.settings = {
-    "org/gnome/shell/extensions/user-theme".name = yaruShellVariant;
-
-    "org/gnome/desktop/interface" = {
-      color-scheme = if dark then "prefer-dark" else "prefer-light";
-      gtk-theme = yaruVariant;
-      icon-theme = "Yaru";
-      cursor-theme = "Yaru";
-      cursor-size = 24;
-      font-name = "Ubuntu 11";
-      document-font-name = "Ubuntu 11";
-      monospace-font-name = "Ubuntu Mono 13";
-    };
+  dconf.settings."org/gnome/desktop/interface" = {
+    color-scheme = "prefer-dark";
+    gtk-theme = "adw-gtk3-dark";
+    icon-theme = "Papirus-Dark";
+    cursor-theme = cursor.name;
+    cursor-size = cursor.size;
+    font-name = "Inter 11";
+    monospace-font-name = "JetBrainsMono Nerd Font 11";
   };
 }

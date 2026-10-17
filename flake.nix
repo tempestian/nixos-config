@@ -13,9 +13,13 @@
       url = "github:Daaboulex/eden-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    qs-niri = {
+      url = "github:dpentx/qs-niri/oneui8-adapt";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, home-manager, nix-flatpak, nvibrant, eden, ... }@inputs:
+  outputs = { nixpkgs, home-manager, nix-flatpak, nvibrant, eden, qs-niri, ... }@inputs:
     let
       vars = import ./vars.nix;
     in
@@ -28,15 +32,18 @@
           nvibrant.nixosModules.default
           nix-flatpak.nixosModules.nix-flatpak
           eden.nixosModules.default
+          qs-niri.nixosModules.default
           { nixpkgs.overlays = [ eden.overlays.default ]; }
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "hm-bak";
             home-manager.extraSpecialArgs = { inherit inputs vars; };
             home-manager.users.${vars.username} = import ./home;
             home-manager.sharedModules = [
               nix-flatpak.homeManagerModules.nix-flatpak
+              qs-niri.homeManagerModules.default
             ];
           }
         ];
