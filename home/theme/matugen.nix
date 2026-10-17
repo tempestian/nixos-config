@@ -148,6 +148,15 @@ let
     set -g fish_pager_color_selected_background --background=${s "primary_container"}
   '';
 
+  niriColors = pkgs.writeText "matugen-niri.kdl" ''
+    layout {
+        focus-ring {
+            active-color "${c "primary"}"
+            inactive-color "${c "outline_variant"}"
+        }
+    }
+  '';
+
   qtRoles = {
     windowText = "on_surface";
     button = "surface_container";
@@ -216,6 +225,9 @@ let
       gtk4 = template gtk ".config/gtk-4.0/colors.css" { };
       btop = template btop ".config/btop/themes/matugen.theme" { };
       fish = template fish ".config/fish/matugen.fish" { };
+      niri = template niriColors ".config/niri/colors.kdl" {
+        post_hook = "niri msg action load-config-file || true";
+      };
       qt5ct = template qt ".config/qt5ct/colors/matugen.conf" { };
       qt6ct = template qt ".config/qt6ct/colors/matugen.conf" { };
     };
@@ -225,6 +237,15 @@ in
   home.packages = [ pkgs.matugen ];
 
   xdg.configFile."matugen/config.toml".source = toml.generate "matugen-config.toml" matugenConfig;
+
+  # niri refuses to start if an included file is missing, and the seed below only runs once per machine.
+  home.activation.niriColorsFallback = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    f="$HOME/.config/niri/colors.kdl"
+    if [ ! -e "$f" ]; then
+      run mkdir -p "$(dirname "$f")"
+      run sh -c "printf 'layout { focus-ring { active-color \"${palette.accentHex}\"; inactive-color \"#45475a\"; }; }\n' > \"$f\""
+    fi
+  '';
 
   home.activation.matugenSeed = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
     marker="${config.xdg.cacheHome}/qs-niri/seeded"

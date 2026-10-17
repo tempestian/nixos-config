@@ -1,4 +1,4 @@
-{ lib, pkgs, inputs, vars, ... }:
+{ config, lib, pkgs, inputs, vars, ... }:
 let
   palette = import ./theme/palette.nix { inherit lib pkgs; };
   qs = inputs.qs-niri.packages.${vars.system}.default;
@@ -15,6 +15,8 @@ let
     done
     exec ${awwwBin} img ${palette.wallpaper} --transition-type none
   '';
+
+  colorsFile = "${config.home.homeDirectory}/.config/niri/colors.kdl"; # written by matugen (home/theme/matugen.nix)
 
   touch = name: ''spawn-sh "touch /tmp/qs-${name}";'';
 
@@ -51,8 +53,6 @@ let
         default-column-width { proportion 0.5; }
         focus-ring {
             width 3
-            active-color "${palette.accentHex}"
-            inactive-color "#45475a"
         }
         border {
             off
@@ -119,6 +119,9 @@ let
         Mod+Alt+P hotkey-overlay-title="Medya" { ${touch "media"} }
         Mod+Alt+R hotkey-overlay-title="Ekran kaydı" { ${touch "record"} }
         Mod+Alt+S hotkey-overlay-title="Sistem araçları" { ${touch "systools"} }
+        Mod+Alt+T hotkey-overlay-title="Hız testi" { ${touch "speedtest"} }
+        Mod+Alt+H hotkey-overlay-title="Hotspot QR" { ${touch "hotspotqr"} }
+        Mod+Alt+Q hotkey-overlay-title="Güç menüsü" { ${touch "powermenu"} }
         Ctrl+Shift+Escape hotkey-overlay-title="Görev yöneticisi" { ${touch "taskmanager"} }
         Super+Alt+L allow-when-locked=true hotkey-overlay-title="Ekranı kilitle" { ${touch "lock"} }
 
@@ -247,11 +250,16 @@ let
         Ctrl+Alt+Delete { quit; }
         Mod+Shift+P { power-off-monitors; }
     }
+
+    include "${colorsFile}"
   '';
 
+  # The include is absolute at runtime; in the sandbox it points at a stub so `niri validate` can run.
   validated = pkgs.runCommand "niri-config.kdl" { nativeBuildInputs = [ pkgs.niri ]; } ''
     cp ${configFile} $out
-    HOME=$TMPDIR niri validate -c $out
+    echo 'layout { focus-ring { active-color "#89b4fa"; inactive-color "#45475a"; }; }' > colors.kdl
+    sed "s|${colorsFile}|$PWD/colors.kdl|" $out > check.kdl
+    HOME=$TMPDIR niri validate -c check.kdl
   '';
 in
 {
