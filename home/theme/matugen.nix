@@ -124,29 +124,62 @@ let
   '';
 
   fish = pkgs.writeText "matugen-fish.fish" ''
-    set -g fish_color_normal ${s "on_surface"}
-    set -g fish_color_command ${s "primary"}
-    set -g fish_color_keyword ${s "tertiary"}
-    set -g fish_color_quote ${s "green"}
-    set -g fish_color_redirection ${s "secondary"}
-    set -g fish_color_end ${s "tertiary"}
-    set -g fish_color_error ${s "error"}
-    set -g fish_color_param ${s "on_surface_variant"}
-    set -g fish_color_comment ${s "outline"}
-    set -g fish_color_selection --background=${s "primary_container"}
-    set -g fish_color_operator ${s "secondary"}
-    set -g fish_color_escape ${s "tertiary"}
-    set -g fish_color_autosuggestion ${s "outline"}
-    set -g fish_color_cwd ${s "primary"}
-    set -g fish_color_user ${s "green"}
-    set -g fish_color_host ${s "primary"}
-    set -g fish_color_search_match --background=${s "primary_container"}
-    set -g fish_pager_color_progress ${s "outline"}
-    set -g fish_pager_color_prefix ${s "primary"}
-    set -g fish_pager_color_completion ${s "on_surface"}
-    set -g fish_pager_color_description ${s "outline"}
-    set -g fish_pager_color_selected_background --background=${s "primary_container"}
+    set -U fish_color_normal ${s "on_surface"}
+    set -U fish_color_command ${s "primary"}
+    set -U fish_color_keyword ${s "tertiary"}
+    set -U fish_color_quote ${s "green"}
+    set -U fish_color_redirection ${s "secondary"}
+    set -U fish_color_end ${s "tertiary"}
+    set -U fish_color_error ${s "error"}
+    set -U fish_color_param ${s "on_surface_variant"}
+    set -U fish_color_option ${s "secondary"}
+    set -U fish_color_valid_path --underline
+    set -U fish_color_comment ${s "outline"}
+    set -U fish_color_selection --background=${s "primary_container"}
+    set -U fish_color_operator ${s "secondary"}
+    set -U fish_color_escape ${s "tertiary"}
+    set -U fish_color_autosuggestion ${s "outline"}
+    set -U fish_color_cancel ${s "outline"}
+    set -U fish_color_match ${s "primary"}
+    set -U fish_color_cwd ${s "primary"}
+    set -U fish_color_cwd_root ${s "error"}
+    set -U fish_color_user ${s "green"}
+    set -U fish_color_host ${s "primary"}
+    set -U fish_color_host_remote ${s "tertiary"}
+    set -U fish_color_status ${s "error"}
+    set -U fish_color_history_current ${s "on_surface"}
+    set -U fish_color_search_match --background=${s "primary_container"}
+    set -U fish_pager_color_progress ${s "outline"}
+    set -U fish_pager_color_prefix ${s "primary"}
+    set -U fish_pager_color_completion ${s "on_surface"}
+    set -U fish_pager_color_description ${s "outline"}
+    set -U fish_pager_color_selected_background --background=${s "primary_container"}
+    set -U fish_pager_color_selected_prefix ${s "primary"}
+    set -U fish_pager_color_selected_completion ${s "on_surface"}
+    set -U fish_pager_color_selected_description ${s "on_surface_variant"}
+    set -Ux FZF_DEFAULT_OPTS "--color=bg:-1,bg+:${c "surface_container_high"},fg:${c "on_surface"},fg+:${c "on_surface"},hl:${c "primary"},hl+:${c "primary"},info:${c "secondary"},prompt:${c "primary"},pointer:${c "primary"},marker:${c "tertiary"},spinner:${c "tertiary"},header:${c "outline"},border:${c "outline_variant"}"
   '';
+
+  starshipToml = toml.generate "matugen-starship.toml" (lib.recursiveUpdate config.programs.starship.settings {
+    palette = "matugen";
+    palettes.matugen = {
+      primary = c "primary";
+      secondary = c "secondary";
+      tertiary = c "tertiary";
+      error = c "error";
+      outline = c "outline";
+      surface = c "surface";
+    };
+    character = {
+      success_symbol = "[❯](bold primary)";
+      error_symbol = "[❯](bold error)";
+    };
+    directory.style = "bold primary";
+    git_branch.style = "bold tertiary";
+    git_status.style = "bold secondary";
+    cmd_duration.style = "outline";
+    nix_shell.style = "bold secondary";
+  });
 
   niriColors = pkgs.writeText "matugen-niri.kdl" ''
     layout {
@@ -224,7 +257,10 @@ let
       gtk3 = template gtk ".config/gtk-3.0/colors.css" { };
       gtk4 = template gtk ".config/gtk-4.0/colors.css" { };
       btop = template btop ".config/btop/themes/matugen.theme" { };
-      fish = template fish ".config/fish/matugen.fish" { };
+      fish = template fish ".config/fish/matugen.fish" {
+        post_hook = "${pkgs.fish}/bin/fish -c 'source ${home}/.config/fish/matugen.fish' || true";
+      };
+      starship = template starshipToml ".config/starship-matugen.toml" { };
       niri = template niriColors ".config/niri/colors.kdl" {
         post_hook = "niri msg action load-config-file || true";
       };
@@ -238,7 +274,6 @@ in
 
   xdg.configFile."matugen/config.toml".source = toml.generate "matugen-config.toml" matugenConfig;
 
-  # niri refuses to start if an included file is missing, and the seed below only runs once per machine.
   home.activation.niriColorsFallback = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     f="$HOME/.config/niri/colors.kdl"
     if [ ! -e "$f" ]; then

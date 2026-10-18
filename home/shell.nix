@@ -2,9 +2,6 @@
 {
   programs.bash = {
     enable = true;
-    shellAliases = {
-      #update = "sudo nixos-rebuild switch --flake ~/nixos-config";
-    };
   };
 
   programs.fish = {
@@ -14,6 +11,9 @@
       set -g fish_greeting
       if test -f $HOME/.config/fish/matugen.fish
         source $HOME/.config/fish/matugen.fish
+      end
+      if test -f $HOME/.config/starship-matugen.toml
+        set -gx STARSHIP_CONFIG $HOME/.config/starship-matugen.toml
       end
     '';
 

@@ -16,9 +16,18 @@ let
     exec ${awwwBin} img ${palette.wallpaper} --transition-type none
   '';
 
-  colorsFile = "${config.home.homeDirectory}/.config/niri/colors.kdl"; # written by matugen (home/theme/matugen.nix)
+  colorsFile = "${config.home.homeDirectory}/.config/niri/colors.kdl";
 
   touch = name: ''spawn-sh "touch /tmp/qs-${name}";'';
+
+  ocrTesseract = pkgs.tesseract.override { enableLanguages = [ "eng" "tur" ]; };
+
+  ocrScript = pkgs.writeShellScript "region-ocr" ''
+    geometry=$(${pkgs.slurp}/bin/slurp) || exit 0
+    text=$(${pkgs.grim}/bin/grim -g "$geometry" - | ${ocrTesseract}/bin/tesseract stdin stdout -l eng+tur 2>/dev/null)
+    printf '%s' "$text" | ${pkgs.wl-clipboard}/bin/wl-copy
+    ${pkgs.libnotify}/bin/notify-send "OCR" "$text"
+  '';
 
   configFile = pkgs.writeText "niri-config.kdl" ''
     input {
@@ -103,41 +112,74 @@ let
     }
 
     binds {
+        Mod+Slash hotkey-overlay-title="Kısayol listesi" { show-hotkey-overlay; }
         Mod+Shift+Slash { show-hotkey-overlay; }
 
         Mod+Return hotkey-overlay-title="Terminal: kitty" { spawn "kitty"; }
         Mod+T { spawn "kitty"; }
         Mod+E hotkey-overlay-title="Dosyalar: thunar" { spawn "thunar"; }
-        Mod+B hotkey-overlay-title="Tarayıcı: firefox" { spawn "firefox"; }
+        Mod+W hotkey-overlay-title="Tarayıcı: firefox" { spawn "firefox"; }
+        Mod+B { spawn "firefox"; }
 
-        Mod+D hotkey-overlay-title="Uygulama başlatıcı" { ${touch "launcher"} }
-        Mod+A hotkey-overlay-title="Denetim merkezi" { ${touch "controlcenter"} }
-        Mod+N hotkey-overlay-title="Bildirimler" { ${touch "sidebar"} }
-        Mod+Shift+D hotkey-overlay-title="Gösterge paneli" { ${touch "dashboard"} }
+        Mod+Space repeat=false hotkey-overlay-title="Arama / uygulama başlatıcı" { ${touch "launcher"} }
+        Mod+Tab repeat=false hotkey-overlay-title="Genel bakış" { toggle-overview; }
+        Mod+O repeat=false { toggle-overview; }
         Mod+V hotkey-overlay-title="Pano geçmişi" { ${touch "clipboard"} }
         Mod+Semicolon hotkey-overlay-title="Emoji" { ${touch "emoji"} }
-        Mod+Alt+P hotkey-overlay-title="Medya" { ${touch "media"} }
-        Mod+Alt+R hotkey-overlay-title="Ekran kaydı" { ${touch "record"} }
+        Mod+Alt+A hotkey-overlay-title="Denetim merkezi" { ${touch "controlcenter"} }
+        Mod+N hotkey-overlay-title="Bildirimler" { ${touch "sidebar"} }
+        Mod+Shift+D hotkey-overlay-title="Gösterge paneli" { ${touch "dashboard"} }
+        Mod+Alt+M hotkey-overlay-title="Medya paneli" { ${touch "media"} }
         Mod+Alt+S hotkey-overlay-title="Sistem araçları" { ${touch "systools"} }
         Mod+Alt+T hotkey-overlay-title="Hız testi" { ${touch "speedtest"} }
         Mod+Alt+H hotkey-overlay-title="Hotspot QR" { ${touch "hotspotqr"} }
-        Mod+Alt+Q hotkey-overlay-title="Güç menüsü" { ${touch "powermenu"} }
         Ctrl+Shift+Escape hotkey-overlay-title="Görev yöneticisi" { ${touch "taskmanager"} }
-        Super+Alt+L allow-when-locked=true hotkey-overlay-title="Ekranı kilitle" { ${touch "lock"} }
+
+        Mod+Shift+Q hotkey-overlay-title="Güç menüsü" { ${touch "powermenu"} }
+        Mod+Alt+Q { ${touch "powermenu"} }
+        Mod+Alt+L allow-when-locked=true hotkey-overlay-title="Ekranı kilitle" { ${touch "lock"} }
+        Super+Alt+L allow-when-locked=true { ${touch "lock"} }
+
+        Mod+Shift+S hotkey-overlay-title="Bölge ekran görüntüsü" { screenshot; }
+        Ctrl+Shift+S { screenshot; }
+        Mod+Shift+X hotkey-overlay-title="Bölgeden metin kopyala (OCR)" { spawn "${ocrScript}"; }
+        Mod+Shift+R hotkey-overlay-title="Ekran kaydı" { ${touch "record"} }
+        Mod+Alt+R { ${touch "record"} }
+        Print { screenshot; }
+        Ctrl+Print { screenshot-screen; }
+        Mod+Print { screenshot-screen; }
+        Alt+Print { screenshot-window; }
 
         XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05+ -l 1.0"; }
         XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05-"; }
         XF86AudioMute        allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
         XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
         XF86AudioPlay        allow-when-locked=true { spawn-sh "playerctl play-pause"; }
+        XF86AudioPause       allow-when-locked=true { spawn-sh "playerctl play-pause"; }
         XF86AudioStop        allow-when-locked=true { spawn-sh "playerctl stop"; }
         XF86AudioPrev        allow-when-locked=true { spawn-sh "playerctl previous"; }
         XF86AudioNext        allow-when-locked=true { spawn-sh "playerctl next"; }
         XF86MonBrightnessUp   allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "+5%"; }
         XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "5%-"; }
 
-        Mod+O repeat=false { toggle-overview; }
-        Mod+Q repeat=false { close-window; }
+        Ctrl+Mod+Space hotkey-overlay-title="Oynat / duraklat" { spawn-sh "playerctl play-pause"; }
+        Mod+Shift+P { spawn-sh "playerctl play-pause"; }
+        Mod+Alt+N hotkey-overlay-title="Sonraki parça" { spawn-sh "playerctl next"; }
+        Mod+Shift+N { spawn-sh "playerctl next"; }
+        Mod+Alt+P hotkey-overlay-title="Önceki parça" { spawn-sh "playerctl previous"; }
+        Mod+Shift+B { spawn-sh "playerctl previous"; }
+        Mod+Shift+M hotkey-overlay-title="Sesi kapat / aç" { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
+
+        Mod+Q repeat=false allow-inhibiting=false hotkey-overlay-title="Pencereyi kapat" { close-window; }
+
+        Mod+D hotkey-overlay-title="Sütunu tam boy yap / geri al" { maximize-column; }
+        Mod+F hotkey-overlay-title="Tam ekran / normal" { fullscreen-window; }
+        Mod+Shift+F { fullscreen-window; }
+        Mod+M hotkey-overlay-title="Pencereyi kenarlara kadar büyüt" { maximize-window-to-edges; }
+        Mod+A hotkey-overlay-title="Yüzen / döşeli geçişi" { toggle-window-floating; }
+        Mod+Shift+V { switch-focus-between-floating-and-tiling; }
+        Mod+Shift+Space { switch-focus-between-floating-and-tiling; }
+        Mod+Shift+W hotkey-overlay-title="Sekmeli görünüm" { toggle-column-tabbed-display; }
 
         Mod+Left  { focus-column-left; }
         Mod+Down  { focus-window-down; }
@@ -147,29 +189,28 @@ let
         Mod+J     { focus-window-down; }
         Mod+K     { focus-window-up; }
         Mod+L     { focus-column-right; }
-
-        Mod+Ctrl+Left  { move-column-left; }
-        Mod+Ctrl+Down  { move-window-down; }
-        Mod+Ctrl+Up    { move-window-up; }
-        Mod+Ctrl+Right { move-column-right; }
-        Mod+Ctrl+H     { move-column-left; }
-        Mod+Ctrl+J     { move-window-down; }
-        Mod+Ctrl+K     { move-window-up; }
-        Mod+Ctrl+L     { move-column-right; }
-
         Mod+Home { focus-column-first; }
         Mod+End  { focus-column-last; }
+
+        Mod+Shift+Left  { move-column-left; }
+        Mod+Shift+Down  { move-window-down; }
+        Mod+Shift+Up    { move-window-up; }
+        Mod+Shift+Right { move-column-right; }
+        Mod+Shift+H     { move-column-left; }
+        Mod+Shift+J     { move-window-down; }
+        Mod+Shift+K     { move-window-up; }
+        Mod+Shift+L     { move-column-right; }
         Mod+Ctrl+Home { move-column-to-first; }
         Mod+Ctrl+End  { move-column-to-last; }
 
-        Mod+Shift+Left  { focus-monitor-left; }
-        Mod+Shift+Down  { focus-monitor-down; }
-        Mod+Shift+Up    { focus-monitor-up; }
-        Mod+Shift+Right { focus-monitor-right; }
-        Mod+Shift+Ctrl+Left  { move-column-to-monitor-left; }
-        Mod+Shift+Ctrl+Down  { move-column-to-monitor-down; }
-        Mod+Shift+Ctrl+Up    { move-column-to-monitor-up; }
-        Mod+Shift+Ctrl+Right { move-column-to-monitor-right; }
+        Mod+Ctrl+Left  { focus-monitor-left; }
+        Mod+Ctrl+Down  { focus-monitor-down; }
+        Mod+Ctrl+Up    { focus-monitor-up; }
+        Mod+Ctrl+Right { focus-monitor-right; }
+        Mod+Ctrl+Shift+Left  { move-column-to-monitor-left; }
+        Mod+Ctrl+Shift+Down  { move-column-to-monitor-down; }
+        Mod+Ctrl+Shift+Up    { move-column-to-monitor-up; }
+        Mod+Ctrl+Shift+Right { move-column-to-monitor-right; }
 
         Mod+Page_Down      { focus-workspace-down; }
         Mod+Page_Up        { focus-workspace-up; }
@@ -192,10 +233,6 @@ let
         Mod+WheelScrollLeft       { focus-column-left; }
         Mod+Ctrl+WheelScrollRight { move-column-right; }
         Mod+Ctrl+WheelScrollLeft  { move-column-left; }
-        Mod+Shift+WheelScrollDown      { focus-column-right; }
-        Mod+Shift+WheelScrollUp        { focus-column-left; }
-        Mod+Ctrl+Shift+WheelScrollDown { move-column-right; }
-        Mod+Ctrl+Shift+WheelScrollUp   { move-column-left; }
 
         Mod+1 { focus-workspace 1; }
         Mod+2 { focus-workspace 2; }
@@ -222,12 +259,9 @@ let
         Mod+Period { expel-window-from-column; }
 
         Mod+R { switch-preset-column-width; }
-        Mod+Shift+R { switch-preset-column-width-back; }
+        Mod+Alt+Shift+R { switch-preset-column-width-back; }
         Mod+Ctrl+Shift+R { switch-preset-window-height; }
         Mod+Ctrl+R { reset-window-height; }
-        Mod+F { maximize-column; }
-        Mod+Shift+F { fullscreen-window; }
-        Mod+M { maximize-window-to-edges; }
         Mod+Ctrl+F { expand-column-to-available-width; }
         Mod+C { center-column; }
         Mod+Ctrl+C { center-visible-columns; }
@@ -236,25 +270,16 @@ let
         Mod+Shift+Minus { set-window-height "-10%"; }
         Mod+Shift+Equal { set-window-height "+10%"; }
 
-        Mod+Space { toggle-window-floating; }
-        Mod+Shift+Space { switch-focus-between-floating-and-tiling; }
-        Mod+W { toggle-column-tabbed-display; }
-
-        Print { screenshot; }
-        Ctrl+Print { screenshot-screen; }
-        Alt+Print { screenshot-window; }
-
         Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
 
         Mod+Shift+E { quit; }
         Ctrl+Alt+Delete { quit; }
-        Mod+Shift+P { power-off-monitors; }
+        Mod+Shift+O { power-off-monitors; }
     }
 
     include "${colorsFile}"
   '';
 
-  # The include is absolute at runtime; in the sandbox it points at a stub so `niri validate` can run.
   validated = pkgs.runCommand "niri-config.kdl" { nativeBuildInputs = [ pkgs.niri ]; } ''
     cp ${configFile} $out
     echo 'layout { focus-ring { active-color "#89b4fa"; inactive-color "#45475a"; }; }' > colors.kdl
@@ -266,7 +291,7 @@ in
   xdg.configFile."niri/config.kdl".source = validated;
 
   home.packages = with pkgs; [
-    awww # Artık let bloğundaki string yerine doğrudan pkgs.awww paketini alır
+    awww
     mpvpaper
     soteria
     python3

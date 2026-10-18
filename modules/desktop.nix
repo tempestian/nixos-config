@@ -16,11 +16,9 @@
 
     security.pam.services.greetd.enableGnomeKeyring = true;
 
-    # Ekran kaydı: gsr-kms-server için cap_sys_admin sarmalayıcısı (polkit şifresi ve hata 51 olmasın)
     programs.gpu-screen-recorder.enable = true;
 
     programs.dconf.enable = true;
-    programs.fish.enable = true;
     programs.xfconf.enable = true;
 
     programs.thunar = {
