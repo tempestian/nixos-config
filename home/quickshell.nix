@@ -16,7 +16,7 @@ in
       paths.screenshotsDir = "~/Pictures/Screenshots";
       launcher = {
         terminalCommand = [ "kitty" ];
-        favorites = [ "firefox" "kitty" "thunar" "discord" "spotify" "steam" ];
+        favorites = [ "firefox" "kitty" "discord" "spotify" "steam" ];
       };
       gaming.appIds = [ "^heroic" "^prismlauncher" "^org\\.prismlauncher" "^eden" ];
       lock.idleMinutes = 15;

@@ -39,7 +39,7 @@ Değişiklik denemeden önce `switch` yerine `build` yazmak yeterli, sistemi de�
 
 - niri ayarı `home/niri.nix` içinde, `niri validate` ile derleme sırasında doğrulanıyor
 - qs-niri ayarları `home/quickshell.nix` içinde (`programs.qs-niri`), profil `bloated`
-- Terminal kitty (`Super+Enter`), kabuk fish, dosya yöneticisi Thunar
+- Terminal kitty (`Super+Enter`), kabuk fish, dosya yöneticisi qs-niri'nin kendi yöneticisi (`Super+E`)
 - Kısayollar: `Super+D` başlatıcı, `Super+A` denetim merkezi, `Super+N` bildirimler, `Super+V` pano geçmişi, `Super+Alt+L` kilit, `Super+Shift+/` tüm kısayol listesi
 
 ## Tema

@@ -117,7 +117,7 @@ let
 
         Mod+Return hotkey-overlay-title="Terminal: kitty" { spawn "kitty"; }
         Mod+T { spawn "kitty"; }
-        Mod+E hotkey-overlay-title="Dosyalar: thunar" { spawn "thunar"; }
+        Mod+E hotkey-overlay-title="Dosya yöneticisi" { ${touch "files"} }
         Mod+W hotkey-overlay-title="Tarayıcı: firefox" { spawn "firefox"; }
         Mod+B { spawn "firefox"; }
 
