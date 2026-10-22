@@ -27,5 +27,7 @@ in
     networkmanagerapplet
     qalculate-gtk
     wl-clipboard
+    pv
+    rsync
   ];
 }

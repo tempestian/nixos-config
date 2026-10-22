@@ -17,6 +17,7 @@ let
   '';
 
   colorsFile = "${config.home.homeDirectory}/.config/niri/colors.kdl";
+  keyboardFile = "${config.home.homeDirectory}/.config/niri/qs-keyboard.kdl";
 
   touch = name: ''spawn-sh "touch /tmp/qs-${name}";'';
 
@@ -32,9 +33,6 @@ let
   configFile = pkgs.writeText "niri-config.kdl" ''
     input {
         keyboard {
-            xkb {
-                layout "${vars.keyboardLayout}"
-            }
             numlock
         }
         touchpad {
@@ -278,17 +276,28 @@ let
     }
 
     include "${colorsFile}"
+    include "${keyboardFile}"
   '';
 
   validated = pkgs.runCommand "niri-config.kdl" { nativeBuildInputs = [ pkgs.niri ]; } ''
     cp ${configFile} $out
     echo 'layout { focus-ring { active-color "#89b4fa"; inactive-color "#45475a"; }; }' > colors.kdl
-    sed "s|${colorsFile}|$PWD/colors.kdl|" $out > check.kdl
+    echo 'input { keyboard { xkb { layout "${vars.keyboardLayout}"; }; }; }' > qs-keyboard.kdl
+    sed -e "s|${colorsFile}|$PWD/colors.kdl|" -e "s|${keyboardFile}|$PWD/qs-keyboard.kdl|" $out > check.kdl
     HOME=$TMPDIR niri validate -c check.kdl
   '';
 in
 {
   xdg.configFile."niri/config.kdl".source = validated;
+
+  # qs-niri bu dosyayı Ayarlar > Shell > Keyboard üzerinden yazar; yoksa niri config'i yüklenemez
+  home.activation.niriKeyboardKdl = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    f="${keyboardFile}"
+    if [ ! -e "$f" ]; then
+      mkdir -p "$(dirname "$f")"
+      printf 'input {\n    keyboard {\n        xkb {\n            layout "%s"\n        }\n    }\n}\n' "${vars.keyboardLayout}" > "$f"
+    fi
+  '';
 
   home.packages = with pkgs; [
     awww
