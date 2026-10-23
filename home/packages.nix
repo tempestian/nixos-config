@@ -19,6 +19,8 @@ in
     qbittorrent
     unzip
     onlyoffice-desktopeditors
+    antigravity-fhs
+    github-mcp-server
     pear-desktop
     mpv
     imv
