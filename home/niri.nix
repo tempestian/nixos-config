@@ -290,7 +290,6 @@ in
 {
   xdg.configFile."niri/config.kdl".source = validated;
 
-  # qs-niri bu dosyayı Ayarlar > Shell > Keyboard üzerinden yazar; yoksa niri config'i yüklenemez
   home.activation.niriKeyboardKdl = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     f="${keyboardFile}"
     if [ ! -e "$f" ]; then

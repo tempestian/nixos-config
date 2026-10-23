@@ -19,7 +19,7 @@ in
     qbittorrent
     unzip
     onlyoffice-desktopeditors
-    antigravity-fhs
+    antigravity-ide-fhs
     github-mcp-server
     pear-desktop
     mpv
@@ -31,5 +31,13 @@ in
     wl-clipboard
     pv
     rsync
+    kotlin
+    gradle
+    jdk17
   ];
+
+  programs.java = {
+    enable = true;
+    package = pkgs.jdk17;
+  };
 }
