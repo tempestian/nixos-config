@@ -143,6 +143,7 @@ let
         Mod+Shift+X hotkey-overlay-title="Bölgeden metin kopyala (OCR)" { spawn "${ocrScript}"; }
         Mod+Shift+R hotkey-overlay-title="Ekran kaydı" { ${touch "record"} }
         Mod+Alt+R { ${touch "record"} }
+        Alt+Z { spawn "touch" "/tmp/qs-wallswitch"; }
         Print { screenshot; }
         Ctrl+Print { screenshot-screen; }
         Mod+Print { screenshot-screen; }
