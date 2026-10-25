@@ -233,6 +233,15 @@ let
         Mod+Ctrl+7 { move-column-to-workspace 7; }
         Mod+Ctrl+8 { move-column-to-workspace 8; }
         Mod+Ctrl+9 { move-column-to-workspace 9; }
+        Mod+Shift+1 { move-column-to-workspace 1; }
+        Mod+Shift+2 { move-column-to-workspace 2; }
+        Mod+Shift+3 { move-column-to-workspace 3; }
+        Mod+Shift+4 { move-column-to-workspace 4; }
+        Mod+Shift+5 { move-column-to-workspace 5; }
+        Mod+Shift+6 { move-column-to-workspace 6; }
+        Mod+Shift+7 { move-column-to-workspace 7; }
+        Mod+Shift+8 { move-column-to-workspace 8; }
+        Mod+Shift+9 { move-column-to-workspace 9; }
 
         Mod+Page_Down { focus-workspace-down; }
         Mod+Page_Up   { focus-workspace-up; }
@@ -251,6 +260,7 @@ let
         Mod+Period { expel-window-from-column; }
 
         Mod+R { switch-preset-column-width; }
+        Mod+Shift+R { spawn "inir" "region" "recordWithSound"; }
         Mod+Alt+Shift+R { switch-preset-column-width-back; }
         Mod+Ctrl+Shift+R { switch-preset-window-height; }
         Mod+Ctrl+R { reset-window-height; }
