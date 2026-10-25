@@ -13,5 +13,4 @@
   my.network.ttlFix.enable = true;
   my.network.zapret.enable = true;
   my.cpu.disableBoost = true;
-  my.desktop.oneUiGreeter = true;
 }

@@ -117,6 +117,27 @@
         "type": "github"
       }
     },
+    "inir": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792941576,
+        "narHash": "sha256-WOBa7IoPHbiwYV6LIGEBAJLb/84spu4muQgzCyaAD5s=",
+        "owner": "tempestian",
+        "repo": "iNiR",
+        "rev": "1dc78d6e790187ed498a8dbf16e6db2f3a9b7044",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tempestian",
+        "ref": "fix-nix-support",
+        "repo": "iNiR",
+        "type": "github"
+      }
+    },
     "nix-flatpak": {
       "locked": {
         "lastModified": 1767983141,
@@ -179,22 +200,6 @@
         "type": "github"
       }
     },
-    "nixpkgs_2": {
-      "locked": {
-        "lastModified": 1786862985,
-        "narHash": "sha256-FBJRXmbGXiSUDvYEbfLYRkckayyZ6SK1UEqhCrIZ2Cs=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "e5bdc4a41d4c072fe1e3787eaa0320a384741d44",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nvibrant": {
       "inputs": {
         "nixpkgs": [
@@ -218,7 +223,9 @@
     },
     "openanime": {
       "inputs": {
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": [
+          "nixpkgs"
+        ]
       },
       "locked": {
         "lastModified": 1787419688,
@@ -234,36 +241,15 @@
         "type": "github"
       }
     },
-    "qs-niri": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1792840455,
-        "narHash": "sha256-qKI2tA6g8DXtFXcBdwBH+ec5fNb35p0EE74ELOycvbM=",
-        "owner": "dpentx",
-        "repo": "qs-niri",
-        "rev": "974c6282325ab4798c718692343ac036fa9f0496",
-        "type": "github"
-      },
-      "original": {
-        "owner": "dpentx",
-        "ref": "oneui8-adapt",
-        "repo": "qs-niri",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "eden": "eden",
         "home-manager": "home-manager",
+        "inir": "inir",
         "nix-flatpak": "nix-flatpak",
         "nixpkgs": "nixpkgs",
         "nvibrant": "nvibrant",
-        "openanime": "openanime",
-        "qs-niri": "qs-niri"
+        "openanime": "openanime"
       }
     },
     "std": {

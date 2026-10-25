@@ -1,17 +1,19 @@
 { config, lib, pkgs, vars, ... }:
 {
-  options.my.desktop.oneUiGreeter = lib.mkEnableOption "One UI giriş ekranı (kapalıyken tuigreet)";
-
   config = {
     programs.niri = {
       enable = true;
       useNautilus = false;
     };
 
-    programs.qs-niri-system = {
+    services.greetd = {
       enable = true;
-      profile = if config.my.desktop.oneUiGreeter then "bloated" else "base";
-      greeter.user = vars.username;
+      settings = {
+        default_session = {
+          command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --remember-user-session --cmd niri-session";
+          user = "greeter";
+        };
+      };
     };
 
     security.pam.services.greetd.enableGnomeKeyring = true;

@@ -283,7 +283,7 @@ in
   '';
 
   home.activation.matugenSeed = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
-    marker="${config.xdg.cacheHome}/qs-niri/seeded"
+    marker="${config.xdg.cacheHome}/inir/seeded"
     if [ ! -e "$marker" ]; then
       run mkdir -p "$(dirname "$marker")" \
         "$HOME/.config/kitty" "$HOME/.config/gtk-3.0" "$HOME/.config/gtk-4.0" \
