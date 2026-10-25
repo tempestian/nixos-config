@@ -1,4 +1,11 @@
-{ config, lib, pkgs, vars, ... }:
+{ config, lib, pkgs, vars, inputs, ... }:
+let
+  sddmTheme = pkgs.runCommandLocal "sddm-theme-ii-pixel" { } ''
+    mkdir -p $out/share/sddm/themes/ii-pixel/assets
+    cp -r ${inputs.inir.packages.${vars.system}.default}/share/quickshell/inir/dots/sddm/pixel/* $out/share/sddm/themes/ii-pixel/
+    cp ${inputs.inir.packages.${vars.system}.default}/share/quickshell/inir/assets/wallpapers/qs-niri.jpg $out/share/sddm/themes/ii-pixel/assets/background.png
+  '';
+in
 {
   config = {
     programs.niri = {
@@ -6,17 +13,25 @@
       useNautilus = false;
     };
 
-    services.greetd = {
+    services.displayManager.sddm = {
       enable = true;
-      settings = {
-        default_session = {
-          command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --remember-user-session --cmd niri-session";
-          user = "greeter";
-        };
-      };
+      wayland.enable = true;
+      theme = "ii-pixel";
+      extraPackages = with pkgs.kdePackages; [
+        qt5compat
+        qtsvg
+        qtdeclarative
+      ];
     };
 
-    security.pam.services.greetd.enableGnomeKeyring = true;
+    environment.systemPackages = with pkgs; [
+      sddmTheme
+      glib
+      xwayland-satellite
+      xdg-utils
+    ];
+
+    security.pam.services.sddm.enableGnomeKeyring = true;
 
     programs.gpu-screen-recorder.enable = true;
 
@@ -31,11 +46,5 @@
     };
 
     environment.sessionVariables.NIXOS_OZONE_WL = "1";
-
-    environment.systemPackages = with pkgs; [
-      glib
-      xwayland-satellite
-      xdg-utils
-    ];
   };
 }
