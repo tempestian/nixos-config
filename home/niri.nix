@@ -326,5 +326,7 @@ in
     wl-clipboard
     slurp
     grim
+    jq
+    matugen
   ];
 }
