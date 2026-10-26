@@ -241,11 +241,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793026870,
-        "narHash": "sha256-CqW5+NagFyysJFjecH7gLq9ZgdEbZKTZvZk0tFJTmWs=",
+        "lastModified": 1793033378,
+        "narHash": "sha256-aeiAg3foRFCFHdMtOOx4o/Ja/5hK/7iPwgNpsVC+z7M=",
         "owner": "tempestian",
         "repo": "qs-niri",
-        "rev": "72ae15618757175af3853a9a6b540fcce3046b81",
+        "rev": "87c71cacc73bb970c07ccce58d9e622af2554b1b",
         "type": "github"
       },
       "original": {
