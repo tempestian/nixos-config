@@ -43,7 +43,6 @@ in
   };
 
   dconf.settings = {
-    "org/gnome/shell/extensions/user-theme".name = yaruShellVariant;
 
     "org/gnome/desktop/interface" = {
       color-scheme = if dark then "prefer-dark" else "prefer-light";

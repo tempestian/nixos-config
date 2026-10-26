@@ -1,17 +1,43 @@
-{ lib, pkgs, ... }:
+{ config, lib, pkgs, vars, ... }:
 {
-  services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
-  services.gnome.core-apps.enable = false;
+  programs.niri = {
+    enable = true;
+    useNautilus = false;
+  };
 
-  environment.gnome.excludePackages = [ pkgs.gnome-tour ];
+  services.displayManager.sddm = {
+    enable = true;
+    wayland.enable = true;
+    extraPackages = with pkgs.kdePackages; [
+      qt5compat
+      qtsvg
+      qtdeclarative
+    ];
+  };
+
+  security.pam.services.sddm.enableGnomeKeyring = true;
+
+  programs.gpu-screen-recorder.enable = true;
+
+  programs.dconf.enable = true;
+  programs.xfconf.enable = true;
+
+  services.gvfs.enable = true;
+
+  qt = {
+    enable = true;
+    platformTheme = "qt5ct";
+  };
+
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   environment.systemPackages = with pkgs; [
-    gnome-tweaks
     nautilus
-    gnome-console
     gnome-calculator
-    gnome-obfuscate
+    gnome-text-editor
+    glib
+    xwayland-satellite
+    xdg-utils
     gtk3
     libayatana-appindicator
   ];
@@ -21,8 +47,4 @@
       gtk3
       libayatana-appindicator
     ]);
-
-  services.udev.packages = with pkgs; [ gnome-settings-daemon ];
-
-  programs.dconf.enable = true;
 }

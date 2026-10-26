@@ -7,7 +7,8 @@
     ./flatpak.nix
     ./gaming.nix
     ./display.nix
-    ./gnome.nix
+    ./niri.nix
+    ./tempest-shell.nix
     ./theme
   ];
 
