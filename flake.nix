@@ -14,7 +14,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     qs-niri = {
-      url = "github:dpentx/qs-niri/oneui8-adapt";
+      url = "github:tempestian/qs-niri/oneui8-adapt";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

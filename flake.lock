@@ -241,15 +241,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1792840455,
-        "narHash": "sha256-qKI2tA6g8DXtFXcBdwBH+ec5fNb35p0EE74ELOycvbM=",
-        "owner": "dpentx",
+        "lastModified": 1793024217,
+        "narHash": "sha256-317AlHgZx1M3FdkFIYd8eRe/TsyEzKS0IMtS8hryLOc=",
+        "owner": "tempestian",
         "repo": "qs-niri",
-        "rev": "974c6282325ab4798c718692343ac036fa9f0496",
+        "rev": "20ed9d2ad6654d732ab8c786885071f02761b172",
         "type": "github"
       },
       "original": {
-        "owner": "dpentx",
+        "owner": "tempestian",
         "ref": "oneui8-adapt",
         "repo": "qs-niri",
         "type": "github"
