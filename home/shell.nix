@@ -1,8 +1,21 @@
+{ pkgs, ... }:
 {
-  programs.bash = {
+  programs.bash.enable = true;
+
+  programs.fish = {
     enable = true;
-    shellAliases = {
-      #update = "sudo nixos-rebuild switch --flake ~/nixos-config";
+    interactiveShellInit = ''
+      set -g fish_greeting
+    '';
+    shellAbbrs = {
+      update = "sudo nixos-rebuild switch --flake ~/nixos-config#nixos";
+      g = "git";
+      gs = "git status";
     };
+  };
+
+  programs.starship = {
+    enable = true;
+    enableFishIntegration = true;
   };
 }
