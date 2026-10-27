@@ -22,7 +22,7 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, nix-flatpak, nvibrant, eden, tempest-shell, ... }@inputs:
+  outputs = { nixpkgs, home-manager, nix-flatpak, nvibrant, openanime, eden, tempest-shell, ... }@inputs:
     let
       vars = import ./vars.nix;
     in
@@ -36,7 +36,18 @@
           nix-flatpak.nixosModules.nix-flatpak
           eden.nixosModules.default
           tempest-shell.nixosModules.default
-          { nixpkgs.overlays = [ eden.overlays.default ]; }
+          {
+            nixpkgs.overlays = [
+              eden.overlays.default
+              (final: prev: {
+                antigravity-ide = prev.antigravity-ide.overrideAttrs (old: {
+                  postFixup = (old.postFixup or "") + ''
+                    substituteInPlace $out/lib/antigravity-ide/resources/app/out/main.js --replace-fail 'a.set(s,void 0);const o=' 'a.set(s,void 0);await this._persistTopic(n);const o='
+                  '';
+                });
+              })
+            ];
+          }
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;

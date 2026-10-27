@@ -3,12 +3,14 @@
   imports = [
     ./packages.nix
     ./shell.nix
+    ./terminal.nix
     ./git.nix
     ./flatpak.nix
     ./gaming.nix
     ./display.nix
     ./niri.nix
-    ./tempest-shell.nix
+    ./quickshell.nix
+    ./mime.nix
     ./theme
   ];
 

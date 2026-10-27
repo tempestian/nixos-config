@@ -5,6 +5,7 @@
   stateVersion = "26.05";
   timeZone = "Europe/Istanbul";
   locale = "tr_TR.UTF-8";
+  keyboardLayout = "tr";
 
   git = {
     name = "tempestian";
