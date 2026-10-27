@@ -1,10 +1,17 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, vars, ... }:
 let
   palette = import ./theme/palette.nix { inherit lib pkgs; };
 
+  patchedTempestShell = inputs.tempest-shell.packages.${vars.system}.default.overrideAttrs (old: {
+    buildCommand = (old.buildCommand or "") + ''
+      awk '!seen[$0]++ || !/readonly property string scannerPath/'         $out/services/Applications.qml > $out/services/Applications.qml.tmp
+      mv $out/services/Applications.qml.tmp $out/services/Applications.qml
+    '';
+  });
+
   tempestCli = pkgs.runCommandLocal "tempest-shell-cli" { } ''
     mkdir -p $out/bin
-    for f in ${config.programs.tempest-shell.package}/bin/*; do
+    for f in ${patchedTempestShell}/bin/*; do
       ln -s "$f" "$out/bin/$(basename "$f")"
     done
   '';
@@ -12,6 +19,7 @@ in
 {
   programs.tempest-shell = {
     enable = true;
+    package = patchedTempestShell;
     preset = "tempest-capsule";
     mutableConfig = true;
     autostart = true;
