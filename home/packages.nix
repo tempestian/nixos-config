@@ -13,13 +13,32 @@ in
     discord
     telegram-desktop
     gnome-text-editor
+    mousepad
     spotify
     openanime
     fastfetch
     qbittorrent
-    btop
     unzip
     onlyoffice-desktopeditors
+    antigravity-ide-fhs
+    github-mcp-server
     pear-desktop
+    mpv
+    imv
+    xarchiver
+    pavucontrol
+    networkmanagerapplet
+    qalculate-gtk
+    wl-clipboard
+    pv
+    rsync
+    kotlin
+    gradle
+    jdk17
   ];
+
+  programs.java = {
+    enable = true;
+    package = pkgs.jdk17;
+  };
 }

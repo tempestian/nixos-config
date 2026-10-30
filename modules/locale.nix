@@ -19,7 +19,7 @@
   ] (_: vars.locale);
 
   services.xserver.xkb = {
-    layout = "tr";
+    layout = vars.keyboardLayout;
     variant = "";
   };
 

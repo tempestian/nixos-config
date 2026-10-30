@@ -7,4 +7,9 @@
       email = vars.git.email;
     };
   };
+
+  programs.gh = {
+    enable = true;
+    gitCredentialHelper.enable = true;
+  };
 }
