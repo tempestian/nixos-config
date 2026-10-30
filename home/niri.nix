@@ -24,6 +24,9 @@ let
 
     layout {
         gaps 14
+        struts {
+            bottom 54
+        }
         background-color "transparent"
         center-focused-column "never"
         always-center-single-column
@@ -122,7 +125,6 @@ let
     spawn-at-startup "bash" "-c" "systemctl --user import-environment XDG_MENU_PREFIX"
     spawn-at-startup "bash" "-c" "wl-paste --watch cliphist store"
     spawn-at-startup "soteria"
-    spawn-at-startup "tempest-shell" "run"
 
     binds {
         Mod+Tab repeat=false { toggle-overview; }

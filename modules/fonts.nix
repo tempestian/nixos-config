@@ -9,6 +9,7 @@
       noto-fonts-cjk-sans
       noto-fonts-color-emoji
       nerd-fonts.jetbrains-mono
+      material-symbols
       material-design-icons
     ];
 
