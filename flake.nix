@@ -16,13 +16,13 @@
       url = "github:Daaboulex/eden-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    inir = {
-      url = "github:tempestian/iNiR/fix-nix-support";
+    tempest-shell = {
+      url = "path:/home/bayram/Projeler/tempest-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { nixpkgs, home-manager, nix-flatpak, nvibrant, openanime, eden, inir, ... }@inputs:
+  outputs = { nixpkgs, home-manager, nix-flatpak, nvibrant, openanime, eden, tempest-shell, ... }@inputs:
     let
       vars = import ./vars.nix;
     in
@@ -35,10 +35,11 @@
           nvibrant.nixosModules.default
           nix-flatpak.nixosModules.nix-flatpak
           eden.nixosModules.default
-          inir.nixosModules.default
+          tempest-shell.nixosModules.default
           {
             nixpkgs.overlays = [
               eden.overlays.default
+              tempest-shell.overlays.default
               (final: prev: {
                 antigravity-ide = prev.antigravity-ide.overrideAttrs (old: {
                   postFixup = (old.postFixup or "") + ''
@@ -57,7 +58,7 @@
             home-manager.users.${vars.username} = import ./home;
             home-manager.sharedModules = [
               nix-flatpak.homeManagerModules.nix-flatpak
-              inir.homeManagerModules.default
+              tempest-shell.homeManagerModules.default
             ];
           }
         ];

@@ -1,6 +1,7 @@
+{ inputs, vars, ... }:
 {
-  programs.inir = {
+  programs.tempest-shell = {
     enable = true;
-    configSymlink.enable = true;
+    package = inputs.tempest-shell.packages.${vars.system}.default;
   };
 }

@@ -1,7 +1,7 @@
 { config, lib, pkgs, vars, ... }:
 let
   colorsFile = "${config.home.homeDirectory}/.config/niri/colors.kdl";
-  keyboardFile = "${config.home.homeDirectory}/.config/niri/inir-keyboard.kdl";
+  keyboardFile = "${config.home.homeDirectory}/.config/niri/tempest-keyboard.kdl";
 
   configFile = pkgs.writeText "niri-config.kdl" ''
     input {
@@ -23,7 +23,7 @@ let
     }
 
     layout {
-        gaps 16
+        gaps 14
         background-color "transparent"
         center-focused-column "never"
         always-center-single-column
@@ -82,22 +82,13 @@ let
     }
 
     layer-rule {
-        match namespace="quickshell:iiBackdrop"
-        place-within-backdrop true
+        match namespace="tempest:capsule"
         opacity 1.0
     }
 
     layer-rule {
-        match namespace="quickshell:wBackdrop"
-        place-within-backdrop true
+        match namespace="tempest:reserve"
         opacity 1.0
-    }
-
-    layer-rule {
-        match namespace="^quickshell:iris-"
-        background-effect {
-            xray false
-        }
     }
 
     window-rule {
@@ -113,7 +104,7 @@ let
 
     window-rule {
         match is-active=false
-        opacity 0.9
+        opacity 0.95
     }
 
     window-rule {
@@ -121,69 +112,47 @@ let
         open-floating true
     }
 
-    window-rule {
-        match app-id=r#"^xembedsniproxy$"#
-        open-floating true
-        open-focused false
-        opacity 0.0
-        focus-ring { off; }
-        border { off; }
-        shadow { off; }
-    }
-
     environment {
         XDG_CURRENT_DESKTOP "niri"
-        XDG_MENU_PREFIX "plasma-"
         QT_QPA_PLATFORM "wayland"
         ELECTRON_OZONE_PLATFORM_HINT "auto"
         QT_LOGGING_RULES "quickshell.dbus.properties=false"
-        QT_QPA_PLATFORMTHEME "kde"
-        QT_STYLE_OVERRIDE "Darkly"
     }
 
     spawn-at-startup "bash" "-c" "systemctl --user import-environment XDG_MENU_PREFIX"
-    spawn-at-startup "bash" "-c" "wl-paste --no-newline --type text --watch ~/.config/quickshell/inir/scripts/clipboard-store.py"
-    spawn-at-startup "bash" "-c" "wl-paste --type image --watch ~/.config/quickshell/inir/scripts/clipboard-image-store.sh"
+    spawn-at-startup "bash" "-c" "wl-paste --watch cliphist store"
     spawn-at-startup "soteria"
+    spawn-at-startup "tempest-shell" "run"
 
     binds {
         Mod+Tab repeat=false { toggle-overview; }
-        Mod+Shift+E { quit; }
         Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
         Mod+Shift+O { power-off-monitors; }
 
-        Super+G { spawn "inir" "overlay" "toggle"; }
-        Mod+Space repeat=false { spawn "inir" "overview" "toggle"; }
-        Mod+V { spawn "inir" "clipboard" "toggle"; }
-        Mod+Alt+L allow-when-locked=true { spawn "inir" "lock" "activate"; }
-        Mod+Ctrl+Shift+L allow-when-locked=true { spawn "inir" "lock" "focus"; }
+        // Tempest Shell Controls
+        Mod+Space repeat=false { spawn "tempest-shell" "launcher"; }
+        Mod+D repeat=false { spawn "tempest-shell" "launcher"; }
+        Mod+M { spawn "tempest-shell" "media"; }
+        Mod+S { spawn "tempest-shell" "controls"; }
+        Mod+N { spawn "tempest-shell" "notifications"; }
+        Mod+Shift+E { spawn "tempest-shell" "power"; }
+        Mod+Alt+L allow-when-locked=true { spawn "tempest-shell" "lock"; }
 
-        Mod+Shift+S { spawn "inir" "region" "menu"; }
-        Mod+Shift+X { spawn "inir" "region" "ocr"; }
-        Mod+Shift+A { spawn "inir" "region" "search"; }
-        Ctrl+Shift+S { spawn "inir" "region" "menu"; }
-
-        Ctrl+Alt+T { spawn "inir" "wallpaperSelector" "toggle"; }
-        Mod+Comma { spawn "inir" "settings"; }
-        Mod+Slash { spawn "inir" "cheatsheet" "toggle"; }
-        Mod+Shift+W { spawn "inir" "panelFamily" "cycle"; }
-        Mod+Shift+Q { spawn "inir" "session" "toggle"; }
-        Ctrl+Alt+F { spawn "inir" "equalizer" "toggle"; }
-
-        Mod+T { spawn "inir" "terminal"; }
-        Mod+Return { spawn "inir" "terminal"; }
+        // Applications
+        Mod+T { spawn "foot"; }
+        Mod+Return { spawn "foot"; }
         Super+E { spawn "nautilus"; }
-        Super+W { spawn "inir" "browser"; }
+        Super+W { spawn "firefox"; }
 
-        Mod+Q repeat=false allow-inhibiting=false { spawn "inir" "close-window"; }
-        Mod+D { maximize-column; }
+        // Window Actions
+        Mod+Q repeat=false allow-inhibiting=false { close-window; }
         Mod+F { fullscreen-window; }
         Mod+Shift+F { fullscreen-window; }
-        Mod+M { maximize-window-to-edges; }
         Mod+A { toggle-window-floating; }
         Mod+Shift+V { switch-focus-between-floating-and-tiling; }
         Mod+Shift+Space { switch-focus-between-floating-and-tiling; }
 
+        // Navigation
         Mod+Left  { focus-column-left; }
         Mod+Right { focus-column-right; }
         Mod+Up    { focus-window-up; }
@@ -215,6 +184,7 @@ let
         Mod+Ctrl+Shift+Up    { move-column-to-monitor-up; }
         Mod+Ctrl+Shift+Down  { move-column-to-monitor-down; }
 
+        // Workspaces
         Mod+1 { focus-workspace 1; }
         Mod+2 { focus-workspace 2; }
         Mod+3 { focus-workspace 3; }
@@ -260,7 +230,6 @@ let
         Mod+Period { expel-window-from-column; }
 
         Mod+R { switch-preset-column-width; }
-        Mod+Shift+R { spawn "inir" "region" "recordWithSound"; }
         Mod+Alt+Shift+R { switch-preset-column-width-back; }
         Mod+Ctrl+Shift+R { switch-preset-window-height; }
         Mod+Ctrl+R { reset-window-height; }
@@ -277,26 +246,23 @@ let
         Mod+Print  { screenshot-screen; }
         Alt+Print  { screenshot-window; }
 
-        XF86AudioRaiseVolume allow-when-locked=true { spawn "inir" "audio" "volumeUp"; }
-        XF86AudioLowerVolume allow-when-locked=true { spawn "inir" "audio" "volumeDown"; }
-        XF86AudioMute        allow-when-locked=true { spawn "inir" "audio" "mute"; }
-        XF86AudioMicMute     allow-when-locked=true { spawn "inir" "audio" "micMute"; }
+        // Hardware Controls
+        XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%+"; }
+        XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-"; }
+        XF86AudioMute        allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
+        XF86AudioMicMute     allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
 
-        XF86MonBrightnessUp   allow-when-locked=true { spawn "inir" "brightness" "increment"; }
-        XF86MonBrightnessDown allow-when-locked=true { spawn "inir" "brightness" "decrement"; }
+        XF86MonBrightnessUp   allow-when-locked=true { spawn "brightnessctl" "set" "+5%"; }
+        XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "set" "5%-"; }
 
-        XF86AudioPlay  { spawn "inir" "mpris" "playPause"; }
-        XF86AudioPause { spawn "inir" "mpris" "playPause"; }
-        XF86AudioNext  { spawn "inir" "mpris" "next"; }
-        XF86AudioPrev  { spawn "inir" "mpris" "previous"; }
+        XF86AudioPlay  { spawn "playerctl" "play-pause"; }
+        XF86AudioPause { spawn "playerctl" "play-pause"; }
+        XF86AudioNext  { spawn "playerctl" "next"; }
+        XF86AudioPrev  { spawn "playerctl" "previous"; }
 
-        Ctrl+Mod+Space { spawn "inir" "mpris" "playPause"; }
-        Mod+Alt+N      { spawn "inir" "mpris" "next"; }
-        Mod+Alt+P      { spawn "inir" "mpris" "previous"; }
-        Mod+Shift+M    { spawn "inir" "audio" "mute"; }
-        Mod+Shift+P    { spawn "inir" "mpris" "playPause"; }
-        Mod+Shift+N    { spawn "inir" "mpris" "next"; }
-        Mod+Shift+B    { spawn "inir" "mpris" "previous"; }
+        Ctrl+Mod+Space { spawn "playerctl" "play-pause"; }
+        Mod+Alt+N      { spawn "playerctl" "next"; }
+        Mod+Alt+P      { spawn "playerctl" "previous"; }
     }
 
     include "${colorsFile}"
@@ -306,8 +272,8 @@ let
   validated = pkgs.runCommand "niri-config.kdl" { nativeBuildInputs = [ pkgs.niri ]; } ''
     cp ${configFile} $out
     echo 'layout { focus-ring { active-color "#89b4fa"; inactive-color "#45475a"; }; }' > colors.kdl
-    echo 'input { keyboard { xkb { layout "${vars.keyboardLayout}"; }; }; }' > inir-keyboard.kdl
-    sed -e "s|${colorsFile}|$PWD/colors.kdl|" -e "s|${keyboardFile}|$PWD/inir-keyboard.kdl|" $out > check.kdl
+    echo 'input { keyboard { xkb { layout "${vars.keyboardLayout}"; }; }; }' > tempest-keyboard.kdl
+    sed -e "s|${colorsFile}|$PWD/colors.kdl|" -e "s|${keyboardFile}|$PWD/tempest-keyboard.kdl|" $out > check.kdl
     HOME=$TMPDIR niri validate -c check.kdl
   '';
 in
@@ -334,6 +300,7 @@ in
     playerctl
     nautilus
     wl-clipboard
+    cliphist
     slurp
     grim
     jq

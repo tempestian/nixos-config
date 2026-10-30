@@ -1,9 +1,8 @@
-{ config, lib, pkgs, vars, inputs, ... }:
+{ config, lib, pkgs, vars, ... }:
 let
   sddmTheme = pkgs.runCommandLocal "sddm-theme-ii-pixel" { } ''
-    mkdir -p $out/share/sddm/themes/ii-pixel/assets
-    cp -r ${inputs.inir.packages.${vars.system}.default}/share/quickshell/inir/dots/sddm/pixel/* $out/share/sddm/themes/ii-pixel/
-    cp ${inputs.inir.packages.${vars.system}.default}/share/quickshell/inir/assets/wallpapers/qs-niri.jpg $out/share/sddm/themes/ii-pixel/assets/background.png
+    mkdir -p $out/share/sddm/themes/ii-pixel
+    cp -r ${./sddm-theme}/* $out/share/sddm/themes/ii-pixel/
   '';
 in
 {

@@ -117,27 +117,6 @@
         "type": "github"
       }
     },
-    "inir": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1792952183,
-        "narHash": "sha256-Pa2ryHrVEOlYcF+fLtfWfQYAcYoLPmcFxHeOrWmzHmg=",
-        "owner": "tempestian",
-        "repo": "iNiR",
-        "rev": "75dbe1870eea0dc87040a644c900e44dabe7bb4f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "tempestian",
-        "ref": "fix-nix-support",
-        "repo": "iNiR",
-        "type": "github"
-      }
-    },
     "nix-flatpak": {
       "locked": {
         "lastModified": 1767983141,
@@ -245,11 +224,11 @@
       "inputs": {
         "eden": "eden",
         "home-manager": "home-manager",
-        "inir": "inir",
         "nix-flatpak": "nix-flatpak",
         "nixpkgs": "nixpkgs",
         "nvibrant": "nvibrant",
-        "openanime": "openanime"
+        "openanime": "openanime",
+        "tempest-shell": "tempest-shell"
       }
     },
     "std": {
@@ -277,6 +256,23 @@
         "ref": "release",
         "repo": "nix-packaging-standard",
         "type": "github"
+      }
+    },
+    "tempest-shell": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1793355813,
+        "narHash": "sha256-AqEY/KPYONx72c2e3ep+U5TxmoUcVWw9Xkd0PpUhqUA=",
+        "path": "/home/bayram/Projeler/tempest-shell",
+        "type": "path"
+      },
+      "original": {
+        "path": "/home/bayram/Projeler/tempest-shell",
+        "type": "path"
       }
     },
     "treefmt": {
