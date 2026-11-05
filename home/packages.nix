@@ -26,7 +26,6 @@ in
     imv
     xarchiver
     pavucontrol
-    networkmanagerapplet
     qalculate-gtk
     wl-clipboard
     pv
