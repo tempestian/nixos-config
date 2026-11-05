@@ -124,11 +124,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793897429,
-        "narHash": "sha256-p19QTc39fCZJsQUv5qFANXZJzbNTWI3D1j/4I5hDi9g=",
+        "lastModified": 1793902103,
+        "narHash": "sha256-u3OuNQ9nXQsqL1E0A2uLvTxIew5fjUWp2H4RwvP2zjE=",
         "owner": "tempestian",
         "repo": "iNiR",
-        "rev": "36d059604de67d121411faa8a7c387f2b14a8d2d",
+        "rev": "114cb3a3cf87186f6511437a76b6e9a50571e642",
         "type": "github"
       },
       "original": {

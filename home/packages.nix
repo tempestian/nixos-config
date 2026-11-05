@@ -27,6 +27,8 @@ in
     pavucontrol
     qalculate-gtk
     wl-clipboard
+    wf-recorder
+    libnotify
     pv
     rsync
     kotlin
