@@ -2,6 +2,7 @@
 {
   imports = [
     ./packages.nix
+    ./fastfetch.nix
     ./shell.nix
     ./terminal.nix
     ./git.nix
