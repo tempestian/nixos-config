@@ -200,27 +200,6 @@
         "type": "github"
       }
     },
-    "nvibrant": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "treefmt": "treefmt"
-      },
-      "locked": {
-        "lastModified": 1780657452,
-        "narHash": "sha256-G4cGbu9mcF8AaqSpN2Pi0SyDyBeNPhSMV2WGtqReOBM=",
-        "owner": "mikaeladev",
-        "repo": "nix-nvibrant",
-        "rev": "501e04b8068f2761192478fa7ddad7aeed1a7443",
-        "type": "github"
-      },
-      "original": {
-        "owner": "mikaeladev",
-        "repo": "nix-nvibrant",
-        "type": "github"
-      }
-    },
     "openanime": {
       "inputs": {
         "nixpkgs": [
@@ -248,7 +227,6 @@
         "inir": "inir",
         "nix-flatpak": "nix-flatpak",
         "nixpkgs": "nixpkgs",
-        "nvibrant": "nvibrant",
         "openanime": "openanime"
       }
     },
@@ -276,27 +254,6 @@
         "owner": "Daaboulex",
         "ref": "release",
         "repo": "nix-packaging-standard",
-        "type": "github"
-      }
-    },
-    "treefmt": {
-      "inputs": {
-        "nixpkgs": [
-          "nvibrant",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1780220602,
-        "narHash": "sha256-eynAfOmbmxJnkp7YewvCEbShNnnYJ9gLLqkzsYtBPeM=",
-        "owner": "numtide",
-        "repo": "treefmt-nix",
-        "rev": "db947814a175b7ca6ded66e21383d938df01c227",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "treefmt-nix",
         "type": "github"
       }
     }

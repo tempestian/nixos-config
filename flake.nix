@@ -4,10 +4,6 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nix-flatpak.url = "github:gmodena/nix-flatpak?ref=v0.7.0";
-    nvibrant = {
-      url = "github:mikaeladev/nix-nvibrant";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     openanime = {
       url = "github:OpenAnime/desktop-ts";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -22,7 +18,7 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, nix-flatpak, nvibrant, openanime, eden, inir, ... }@inputs:
+  outputs = { nixpkgs, home-manager, nix-flatpak, openanime, eden, inir, ... }@inputs:
     let
       vars = import ./vars.nix;
     in
@@ -32,7 +28,6 @@
         specialArgs = { inherit inputs vars; };
         modules = [
           ./hosts
-          nvibrant.nixosModules.default
           nix-flatpak.nixosModules.nix-flatpak
           eden.nixosModules.default
           inir.nixosModules.default

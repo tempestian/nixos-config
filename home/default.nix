@@ -8,7 +8,6 @@
     ./git.nix
     ./flatpak.nix
     ./gaming.nix
-    ./display.nix
     ./niri.nix
     ./quickshell.nix
     ./mime.nix
