@@ -15,7 +15,6 @@ in
     mousepad
     spotify
     openanime
-    fastfetch
     qbittorrent
     unzip
     onlyoffice-desktopeditors
