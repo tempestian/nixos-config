@@ -23,7 +23,7 @@ let
     }
 
     layout {
-        gaps 16
+        gaps 12
         background-color "transparent"
         center-focused-column "never"
         always-center-single-column
@@ -36,8 +36,7 @@ let
             proportion 0.5
         }
         focus-ring {
-            off
-            width 1
+            width 2
         }
         border {
             off
