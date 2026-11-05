@@ -19,7 +19,7 @@ in
     qbittorrent
     unzip
     onlyoffice-desktopeditors
-    antigravity-ide-fhs
+    antigravity-hub
     github-mcp-server
     pear-desktop
     mpv

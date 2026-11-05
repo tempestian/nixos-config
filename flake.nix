@@ -36,13 +36,6 @@
           {
             nixpkgs.overlays = [
               eden.overlays.default
-              (final: prev: {
-                antigravity-ide = prev.antigravity-ide.overrideAttrs (old: {
-                  postFixup = (old.postFixup or "") + ''
-                    substituteInPlace $out/lib/antigravity-ide/resources/app/out/main.js --replace-fail 'a.set(s,void 0);const o=' 'a.set(s,void 0);await this._persistTopic(n);const o='
-                  '';
-                });
-              })
             ];
           }
           home-manager.nixosModules.home-manager
