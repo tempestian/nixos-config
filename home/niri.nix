@@ -141,7 +141,7 @@ let
     }
 
     spawn-at-startup "bash" "-c" "systemctl --user import-environment XDG_MENU_PREFIX"
-    spawn-at-startup "bash" "-c" "wl-paste --no-newline --type text --watch ~/.config/quickshell/inir/scripts/clipboard-store.py"
+    spawn-at-startup "bash" "-c" "wl-paste --no-newline --type text --watch ~/.config/quickshell/inir/scripts/lib/accel-run clipboard-store"
     spawn-at-startup "bash" "-c" "wl-paste --type image --watch ~/.config/quickshell/inir/scripts/clipboard-image-store.sh"
     spawn-at-startup "soteria"
 
