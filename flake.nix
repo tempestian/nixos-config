@@ -8,17 +8,13 @@
       url = "github:OpenAnime/desktop-ts";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    eden = {
-      url = "github:Daaboulex/eden-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     inir = {
       url = "github:tempestian/iNiR/fix-nix-support";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { nixpkgs, home-manager, nix-flatpak, openanime, eden, inir, ... }@inputs:
+  outputs = { nixpkgs, home-manager, nix-flatpak, openanime, inir, ... }@inputs:
     let
       vars = import ./vars.nix;
     in
@@ -29,13 +25,7 @@
         modules = [
           ./hosts
           nix-flatpak.nixosModules.nix-flatpak
-          eden.nixosModules.default
           inir.nixosModules.default
-          {
-            nixpkgs.overlays = [
-              eden.overlays.default
-            ];
-          }
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;

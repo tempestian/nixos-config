@@ -33,15 +33,6 @@
     };
   };
 
-  programs.eden = {
-    enable = true;
-    package = inputs.eden.packages.${vars.system}.default.overrideAttrs (old: {
-      preConfigure = (old.preConfigure or "") + ''
-        export NIX_CFLAGS_COMPILE="$NIX_CFLAGS_COMPILE -Wno-error=maybe-uninitialized -Wno-maybe-uninitialized"
-      '';
-    });
-  };
-
   environment.systemPackages = with pkgs; [
     heroic
     goverlay
