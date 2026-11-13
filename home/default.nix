@@ -12,6 +12,7 @@
     ./quickshell.nix
     ./mime.nix
     ./theme
+    ./ai.nix
   ];
 
   home.username = vars.username;
