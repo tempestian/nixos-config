@@ -50,41 +50,48 @@
           keyColor = "blue";
         }
         {
+          type = "command";
+          key = "  󰃭 NixOS Age";
+          shell = "/bin/sh";
+          text = "echo $(( ($(date +%s) - $(stat -c %W /etc/machine-id)) / 86400 )) days";
+          keyColor = "cyan";
+        }
+        {
           type = "wm";
           key = "  󱂬 WM";
           format = "{pretty-name}";
-          keyColor = "cyan";
+          keyColor = "blue";
         }
         {
           type = "shell";
           key = "  󰞷 Shell";
           format = "{exe-name}";
-          keyColor = "blue";
+          keyColor = "cyan";
         }
         {
           type = "terminal";
           key = "   Terminal";
           format = "{exe-name}";
-          keyColor = "cyan";
+          keyColor = "blue";
         }
         {
           type = "cpu";
           key = "  󰍛 CPU";
           format = "{name}";
-          keyColor = "blue";
+          keyColor = "cyan";
         }
         {
           type = "gpu";
           key = "  󰢮 GPU";
           hideType = "integrated";
           format = "{name}";
-          keyColor = "cyan";
+          keyColor = "blue";
         }
         {
           type = "memory";
           key = "  󰑭 Memory";
           format = "{used} / {total}";
-          keyColor = "blue";
+          keyColor = "cyan";
         }
         {
           type = "custom";
